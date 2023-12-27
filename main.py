@@ -2,6 +2,17 @@ import pygame
 from sys import exit
 from random import randint
 
+#settings
+qwerty = input("background? y/n")
+if qwerty == "y":
+    backg =True
+else:
+    backg = False
+qwerty = input("particles? y/n")
+if qwerty== "y":
+    partic =True
+else:
+    partic = False
 
 pygame.init()
 width,height = 800,500
@@ -11,10 +22,14 @@ clock = pygame.time.Clock()
 list =[]
 
 class Block:
-    def __init__(self,num):
-        self.rect = pygame.Rect(0,0,50,50)
-        self.x_mov = num
-        self.y_mov = 4-num
+    def __init__(self,num,inverse):
+        self.rect = pygame.Rect(width/2,height/2,50,50)
+        if inverse:
+            self.x_mov = -num
+            self.y_mov = -(4-num)
+        else:
+            self.x_mov = num
+            self.y_mov = 4-num
         self.num = num
         self.particles = []
     def movement(self):
@@ -29,7 +44,6 @@ class Block:
     def particles_(self):
         x = randint(-5,5)
         y = randint(-5,5)
-        print(x,y)
         rect = pygame.Rect(0,0, 40,40)
         rect.center = (self.rect.centerx + y ,self.rect.centery + x)
         self.particles.append(rect)
@@ -45,19 +59,22 @@ class Block:
     def update(self):
         self.movement()
         self.wall()
-        self.particles_()
+        if partic:
+            self.particles_()
         self.draw()
     
-for i in range(5):
-    list.append(Block(i))
+for i in range(9):
+    x=i/2
+    list.append(Block(x,False))
+    list.append(Block(x,True))
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit
             exit()
-
-    screen.fill("green")
+    if backg:
+        screen.fill("#484b48")
     for i in list:
         i.update()
 
