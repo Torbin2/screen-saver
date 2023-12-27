@@ -3,19 +3,12 @@ from sys import exit
 from random import randint
 
 #settings
-qwerty = input("background? y/n")
-if qwerty == "y":
-    backg =True
-else:
-    backg = False
-qwerty = input("particles? y/n")
-if qwerty== "y":
-    partic =True
-else:
-    partic = False
+
+backg =True
+partic =True
+width,height = 800,500
 
 pygame.init()
-width,height = 800,500
 screen = pygame.display.set_mode((width,height))
 pygame.display.set_caption('screen-saver')
 clock = pygame.time.Clock()
@@ -41,6 +34,7 @@ class Block:
             self.x_mov = -1*self.x_mov
         if self.rect.top <=0 or self.rect.bottom >=height:
             self.y_mov = -1*self.y_mov
+    
     def particles_(self):
         x = randint(-5,5)
         y = randint(-5,5)
@@ -73,10 +67,21 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit
             exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_w:
+                height-=100
+            if event.key == pygame.K_a:
+                width-=100
+            if event.key == pygame.K_s:
+                height+=100
+            if event.key == pygame.K_d:
+                width+=100
+            screen = pygame.display.set_mode((width,height))
     if backg:
         screen.fill("#484b48")
     for i in list:
         i.update()
 
+    
     pygame.display.update()
     clock.tick(60)
